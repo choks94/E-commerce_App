@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head xmlns:th="http://www.thymeleaf.org">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Watch Shop</title>
+
+        <!--         Bootstrap core CSS -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+
+        <!--         Custom styles for this template -->
+        <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/> 
+
+    </head>
+
+    <body style="background-color: #606060">
+
+        <div th:replace="common/adminHeader :: navbar" />
+        <div class="container">
+            <div>
+                <ol class="breadcrumb">
+                    <li><a th:href="@{/adminportal/watch/adminsWatchList}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i>Go back</a></li>
+                    <li><a th:href="@{/adminportal/watch/updateWatch?id=}+${watch.id}">Edit</a></li>
+                </ol>
+            </div>
+            <div class="alert alert-info" th:if="${UpdateSuccess}">Successfully updated watch info!</div>
+            <div class="alert alert-info" th:if="${SaveSuccess}">Successfully saved new watch!</div>
+            <div class="alert alert-info" th:if="${commentRemoveSuccess}">Successfully removed comment</div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-xs-3">
+                            <div class="form-group" style="margin-top: 10px;">
+                                <div class="image-gallery">
+                                    <div id="big" class="big">
+                                        <img class="img-responsive" id="show" name="imgSrc" th:src="@{/image/watch/}+${watch.id}+'_a.png'"/>
+                                    </div>
+                                    <div id ="sub" class="sub">
+                                        <div th:each="img : ${album}">
+                                            <img class="img-responsive" th:with="image=${img}" th:src="${image}" alt="no img"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-9">
+                            <h3 th:text="${watch.name}"></h3>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <p><strong>Brand: </strong><span th:text="${watch.brand}"></span></p>
+                                    <p><strong>Category: </strong><span th:text="${watch.category}"></span></p>
+                                    <p><strong>Dial colour: </strong><span th:text="${watch.dailColor}"></span></p>
+                                    <p><strong>Case size: </strong><span th:text="${watch.caseSize}"></span></p>
+                                    <p><strong>Case shape: </strong><span th:text="${watch.caseShape}"></span></p>
+                                    <p><strong>Case material: </strong><span th:text="${watch.caseMaterial}"></span></p>
+                                    <p><strong>Case thickness: </strong><span th:text="${watch.caseThikness}"></span></p>
+                                    <p><strong>Number in stock: </strong><span th:text="${watch.inStockNumber}"></span></p>
+                                </div>
+                                <div class="col-xs-6">
+                                    <p><strong>Crystal type: </strong><span th:text="${watch.crystalType}"></span></p>
+                                    <p><strong>Mechanism: </strong><span th:text="${watch.mechanism}"></span></p>
+                                    <p><strong>Strap width: </strong><span th:text="${watch.strapWidth}"></span></p>
+                                    <p><strong>Water resistance: </strong><span th:text="${watch.waterResistance}"></span></p>
+                                    <p><strong>Shipping weight: </strong><span th:text="${watch.shippingWeight}"></span></p>
+                                    <p><strong>List price: </strong><span th:text="${watch.listPrice}"></span></p>
+                                    <p><strong>Our price: </strong><span th:text="${watch.ourPrice}"></span></p>
+                                </div>
+                            </div>
+                            <p><strong>Description: </strong><span th:utext="${watch.description}"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="comments-container" style="margin-left: 20px;">
+                <div style="margin-top: 25px; margin-left: -5px;" th:if="${not #lists.isEmpty(userCommentList)}">
+                    <h4><strong>Comments: </strong></h4> 
+                </div>
+
+                <ul id="comments-list" class="comments-list">
+                    <li>
+                        <div th:each="userComment: ${userCommentList}" style="margin-top: 5px;">
+                            <input hidden="hidden" th:value="${watch.id}"/>
+                            <div class="comment-main-level" >
+                                <!-- Avatar -->
+                                <div class="comment-avatar"><img class="img-responsive" th:src="@{/image/user/user}+'.jpg'"/></div>
+                                <!-- Comment box -->
+                                <div class="comment-box">
+                                    <div class="comment-head">
+                                        <p><h6 class="comment-name"><span th:utext="${userComment.user.username}+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+${#dates.format(userComment.date, 'dd-MM-yyyy HH:mm')}"></span></h6></p>
+                                    </div>
+                                    <div class="comment-content">
+                                        <span th:utext="${userComment.comment}"></span>
+                                    </div>
+                                    <a class="btn btn-danger" th:href="@{/adminportal/watch/removeComment(id=${userComment.id})}" onclick="if (!(confirm('Are you shure to delete this comment info?')))
+                                                return false">Remove comment</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div th:replace="common/adminHeader :: body-bottom-scripts"/>
+        <script type="text/javascript">
+            var bigImg = document.getElementById("big");
+            var subImg = document.getElementById("sub").getElementsByTagName("img");
+
+            for (var i = 0; i < subImg.length; i++) {
+                subImg[i].addEventListener('click', full_image);
+            }
+
+            function full_image() {
+                var imgSrc = this.getAttribute("src");
+                bigImg.innerHTML = "<img src=" + imgSrc + ">";
+            }
+        </script>
+    </body>
+</html>

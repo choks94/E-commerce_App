@@ -1,0 +1,310 @@
+ 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+    <head th:replace="common/header :: common-header" />
+
+    <body style="background-color: #606060">
+        <div th:replace="common/header :: navbar" />
+
+
+        <div class="container">
+            <div th:if="${user != null}">
+                <h3 style="font-family: 'Times New Roman', Times, serif;"><span th:text="${#strings.toUpperCase(user.username)}"></span></h3>
+            </div>
+            <hr style="margin-top: -5px; position: absolute; width: 90%; height: 3px; background-color: #4d0000; z-index: -1;" />
+            <div class="alert alert-info" th:if="${addWatchSuccess}">Successfully Added To Cart</div>
+            <div class="alert alert-info" th:if="${commentSuccess}">Successfully added comment</div>
+            <div class="alert alert-info" th:if="${rateSuccess}">Your rate has been recorded</div>
+            <div class="alert alert-warning" th:if="${addWatchException}">Error Adding To Cart</div>
+            <div class="alert alert-warning" th:if="${notEnoughtInStock}">Only <span th:text="${watch.inStockNumber}"></span> In Stock</div>
+
+
+            <form th:action="@{/shoppingCart/addItem}" style="margin-left: 30px;" method="post">
+                <input hidden="hidden" th:field="${watch.id}" />
+                <div class="row" style="margin-top: 120px;">
+                    <div class="col-xs-3">
+                        <a class="btn btn-warning" style="margin-top: -30px;" th:href="@{/watchList}">Back to watch list</a><br />
+                        <div class="form-group" style="margin-top: 10px;">
+                            <div class="image-gallery">
+                                <div id="big" class="big">
+                                    <img class="img-responsive" th:src="@{/image/watch/}+${watch.id}+'_a.png'"/>
+                                </div>
+                                <div id ="sub" class="sub">
+
+                                    <div th:each="img : ${album}">
+                                        <img class="img-responsive" th:with="image=${img}" th:src="${image}" alt="no img"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-9"  style="margin-top: 10px;">
+                        <h3 th:text="${watch.name}">Name</h3>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <h5><strong>Brand: </strong><span th:text="${watch.brand}"></span></h5>
+                                <p><strong>Category: </strong><span th:text="${watch.category}"></span></p> 
+                                <p><strong>Dial colour: </strong><span th:text="${watch.dailColor}"></span></p> 
+                                <p><strong>Case size: </strong><span th:text="${watch.caseSize}"></span></p> 
+                                <p><strong>Case shape: </strong><span th:text="${watch.caseShape}"></span></p> 
+                                <p><strong>Case material: </strong><span th:text="${watch.caseMaterial}"></span></p> 
+                                <p><strong>Case thickness: </strong><span th:text="${watch.caseThikness}"></span></p> 
+                                <p><strong>Crystal type: </strong><span th:text="${watch.crystalType}"></span></p> 
+                                <p><strong>Mechanism: </strong><span th:text="${watch.mechanism}"></span></p> 
+                                <p><strong>Strap width: </strong><span th:text="${watch.strapWidth}"></span></p>
+                                <p><strong>Water resistance: </strong><span th:text="${watch.waterResistance}"></span></p> 
+                                <p><strong>Strap width: </strong><span th:text="${watch.strapWidth}"></span></p>
+                                <p><strong>Shipping weight: </strong><span th:text="${watch.shippingWeight}"></span></p>
+                            </div>
+                            <div class="col-xs-7">
+                                <div class="panel panel-default" style="border-width: 5px; margin-top: -40px; margin-right: 40px">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <h4>Our price: <span style="color: #db308;">$<span th:text="${watch.ourPrice}"></span></span></h4>
+                                                <p>List price: <span style="text-decoration: line-through">$<span th:text="${watch.listPrice}"></span></span></p> 
+                                                <p>You save: $<span th:text="${#numbers.formatDecimal((watch.listPrice - watch.ourPrice), 0, 'COMMA', 2, 'POINT')}"></span></p>
+                                                <span>Qty: </span>
+                                                <select name="qty">
+                                                    <option th:each="qty : ${qtyList}" th:value="${qty}" th:text="${qty}" th:selected="${qty==1}">
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <h4 th:if="*{watch.inStockNumber&gt;10}" style="color: green">In Stock</h4>
+                                                <h4 th:if="*{watch.inStockNumber&lt;10 and watch.inStockNumber&gt;0}" style="color: green">Only <span th:text="${watch.inStockNumber}"></span> In Stock</h4>
+                                                <h4 th:if="*{watch.inStockNumber==0}" style="color: darkred;">Unvailable</h4>
+                                                <button type="submit" class="btn btn-warning" style="color: black; border: 1px solid black; padding: 10px 40px 10px 40px">Add to cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body" style="margin-left: -20px; margin-right: 20px">
+
+                                    <div class="row">
+                                        <div class="col-xs-12 col-md-12">
+                                            <div class="well well-sm" style="margin-right: 5px; margin-left: 5px; margin-bottom: 5px; margin-top: 5px;">
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-6 text-center">
+                                                        <h1 class="rating-num">
+                                                            <span th:text="${avg}"></span></h1>
+                                                        <div class="rating">
+                                                            <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                                                            </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
+                                                            </span><span class="glyphicon glyphicon-star-empty"></span>
+                                                        </div>
+                                                        <div>
+                                                            <span class="glyphicon glyphicon-user" th:text="${noOfRaters}"></span> total
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-6" >
+                                                        <div class="row rating-desc">
+                                                            <div class="col-xs-3 col-md-3 text-right">
+                                                                <span class="glyphicon glyphicon-star"></span>5
+                                                            </div>
+                                                            <div class="col-xs-8 col-md-9">
+                                                                <div class="progress progress-striped">
+                                                                    <!--<var id="five"><span th:text="${fives}*100"></span></var>-->
+                                                                    <div id="five" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                                         aria-valuemin="0" aria-valuemax="100">
+                                                                        <span class="sr-only" th:text="${fives}*100"><a>&percnt;</a></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end 5 -->
+                                                            <div class="col-xs-3 col-md-3 text-right">
+                                                                <span class="glyphicon glyphicon-star"></span>4
+                                                            </div>
+                                                            <div class="col-xs-8 col-md-9">
+                                                                <div class="progress">
+                                                                    <!--<var id="four"><span th:text="${fours}*100"></span></var>-->
+                                                                    <div id="four" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20"
+                                                                         aria-valuemin="0" aria-valuemax="100">
+                                                                        <span class="sr-only" th:text="${fours}*100">&percnt;</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end 4 -->
+                                                            <div class="col-xs-3 col-md-3 text-right">
+                                                                <span class="glyphicon glyphicon-star"></span>3
+                                                            </div>
+                                                            <div class="col-xs-8 col-md-9">
+                                                                <div class="progress">
+                                                                    <!--<var id="three"><span th:text="${threes}*100"></span></var>-->
+                                                                    <div id="three" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
+                                                                         aria-valuemin="0" aria-valuemax="100">
+                                                                        <span class="sr-only"th:text="${threes}*100"><a>%</a></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end 3 -->
+                                                            <div class="col-xs-3 col-md-3 text-right">
+                                                                <span class="glyphicon glyphicon-star"></span>2
+                                                            </div>
+                                                            <div class="col-xs-8 col-md-9">
+                                                                <div class="progress">
+                                                                    <!--<var id="two"><span th:text="${twoos}*100"></span></var>-->
+                                                                    <div  id="two"  class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20"
+                                                                          aria-valuemin="0" aria-valuemax="100">
+                                                                        <span class="sr-only" th:text="${twoos}*100"><a>%</a></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end 2 -->
+                                                            <div class="col-xs-3 col-md-3 text-right">
+                                                                <span class="glyphicon glyphicon-star"></span>1
+                                                            </div>
+                                                            <div class="col-xs-8 col-md-9">
+                                                                <div class="progress">
+                                                                    <!--<var ><span th:text="${ones}*100"></span></var>-->
+                                                                    <div id="one" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
+                                                                         aria-valuemin="0" aria-valuemax="100">
+                                                                        <span class="sr-only" th:text="${ones}*100">&percnt;</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- end 1 -->
+                                                        </div>
+                                                        <!-- end row -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <p><strong>Description: </strong><span th:utext="${watch.description}"></span></p>
+                    </div>
+                    <hr style="margin-left: 15px; width: 95%;">
+                </div>
+            </form>
+
+            <!-- Comments -->
+            <div class="comments-container" style="margin-left: 20px;" th:if="${not #lists.isEmpty(userCommentList)}">
+                <div style="margin-top: 25px; margin-left: -5px;">
+                    <h4><strong>Comments: </strong></h4> 
+                </div>
+
+                <ul id="comments-list" class="comments-list">
+                    <li>
+                        <div th:each="userComment: ${userCommentList}" style="margin-top: 5px;">
+                            <div class="comment-main-level" >
+                                <!-- Avatar -->
+                                <div class="comment-avatar"><img class="img-responsive" th:src="@{/image/user/user}+'.jpg'"/></div>
+                                <!-- Contenedor del Comentario -->
+                                <div class="comment-box">
+                                    <div class="comment-head">
+                                        <p><h6 class="comment-name"><span th:utext="${userComment.user.username}+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+${#dates.format(userComment.date, 'dd-MM-yyyy HH:mm')}"></span></h6></p>
+                                    </div>
+                                    <div class="comment-content">
+                                        <span th:utext="${userComment.comment}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <form th:action="@{/addComment}" method="post">
+                <input hidden="hidden" th:field="${watch.id}" />
+                <div style="margin-left: 15px; margin-top: 25px;">
+                    <h4><strong>Leave a Comment: </strong></h4> 
+                </div>
+
+                <div class="form-group"> 
+                    <div class="col-md-8">
+                        <textarea class="form-control" id="comment" name="comment" rows="5" th:value="${userComment.comment}" th:text="${userComment.comment}" placeholder="Comment">
+                        </textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-default" style="margin-top: -5px; color: black; border: 1px solid black; padding: 10px 40px 10px 40px">Add a Comment</button>
+            </form>
+
+            <div>
+                <h4 class="text-left" style="margin-top: 35px;">Rate product: </h4>
+
+                <div class="container" style="margin-left: -200px;">
+
+                    <form th:action="@{/addRate}" name="fff" style="margin-left: 30px;" method="post">
+                        <input hidden="hidden" th:field="${watch.id}" />
+                        <div class="starrating risingstar d-flex justify-content-center flex-row-reverse" style="margin-top: -15px;">
+                            <input type="radio" id="star5" onclick="myFunction()" name="rating" th:value="${5}" /><label for="star5" title="5 star">5</label>
+                            <input type="radio" id="star4" onclick="myFunction()" name="rating" th:value="${4}"/><label for="star4" title="4 star">4</label>
+                            <input type="radio" id="star3" onclick="myFunction()" name="rating" th:value="${3}"/><label for="star3" title="3 star">3</label>
+                            <input type="radio" id="star2" onclick="myFunction()" name="rating" th:value="${2}"/><label for="star2" title="2 star">2</label>
+                            <input type="radio" id="star1" onclick="myFunction()" name="rating" th:value="${1}"/><label for="star1" title="1 star">1</label>
+                        </div>
+                        <button style="display: none;" th:id="addRating" type="submit" class="btn btn-warning btn-xs">Add rating</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div th:replace="common/header :: footer"/> 
+        <div th:replace="common/header :: body-bottom-scripts" />
+        <script type="text/javascript">
+            var bigImg = document.getElementById("big");
+            var subImg = document.getElementById("sub").getElementsByTagName("img");
+
+            for (var i = 0; i < subImg.length; i++) {
+                subImg[i].addEventListener('click', full_image);
+            }
+
+            function full_image() {
+                var imgSrc = this.getAttribute("src");
+                bigImg.innerHTML = "<img src=" + imgSrc + ">";
+            }
+
+        </script>
+        <script>
+            var value5 = document.getElementById("five");
+            var progressbar5 = document.getElementById("five");
+            progressbar5.style.width = value5.innerText + "%";
+            console.log(document.getElementById("four"));
+
+        </script>
+        <script>
+            var value4 = document.getElementById("four");
+            var progressbar4 = document.getElementById("four");
+            progressbar4.style.width = value4.innerText + "%";
+            console.log(document.getElementById("four"));
+        </script>
+        <script>
+            var value3 = document.getElementById("three");
+            var progressbar3 = document.getElementById("three");
+            progressbar3.style.width = value3.innerText + "%";
+        </script>
+        <script>
+            var value2 = document.getElementById("two");
+            var progressbar2 = document.getElementById("two");
+            progressbar2.style.width = value2.innerText + "%";
+        </script>
+        <script>
+            var value1 = document.getElementById("one");
+            var progressbar1 = document.getElementById("one");
+            progressbar1.style.width = value1.innerText + "%";
+        </script>
+        <script>
+            function myFunction() {
+                if ($("#star5").is(":checked")) {
+                    $('#addRating').css('display', 'inline-block');
+                } else
+                if ($("#star4").is(":checked")) {
+                    $('#addRating').css('display', 'inline-block');
+                } else
+                if ($("#star3").is(":checked")) {
+                    $('#addRating').css('display', 'inline-block');
+                } else
+                if ($("#star2").is(":checked")) {
+                    $('#addRating').css('display', 'inline-block');
+                } else
+                if ($("#star1").is(":checked")) {
+                    $('#addRating').css('display', 'inline-block');
+                } else {
+                    $('#addRating').css('display', 'hidden');
+                }
+            }
+        </script>
+    </body>
+</html>

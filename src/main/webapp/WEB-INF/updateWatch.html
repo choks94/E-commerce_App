@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head xmlns:th="http://www.thymeleaf.org">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Watch Shop</title>
+
+        <!--         Bootstrap core CSS -->
+
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+
+        <!--         Custom styles for this template -->
+        <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/> 
+        <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>
+        <script>tinymce.init({selector: 'textarea'});</script>
+
+    </head>
+
+    <body style="background-color: #606060">
+
+        <div th:replace="common/adminHeader :: navbar" />
+        <div class="container">
+            <div class="row">
+                <form class="form-horizontal" th:action="@{/adminportal/watch/updateWatch}" method="post" enctype="multipart/form-data">
+                    <fieldset>
+                        <legend class="center-block">Update watch information<span style="font-size:small"> * is a required</span> </legend>
+
+                        <input hidden="hidden" name="id" th:value="${watch.id}"/>
+                        <!--Name-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="name">* Name</label>
+                            <div class="col-md-8">
+                                <input type="text" name="name" class="form-control" id="title" th:value="${watch.name}" required="required" placeholder="Name" />
+                                <span class="help-block">Watch name</span>
+                            </div>
+                        </div>
+                        <!--Brand-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="brand">* Brand</label>
+                            <div class="col-md-8">
+                                <input type="text" name="brand" class="form-control" id="brand" th:value="${watch.brand}" required="required" placeholder="Brand" />
+                                <span class="help-block">Watch brand</span>
+                            </div>
+                        </div>
+                        <!--Category-->
+                        <div class="form-group"> 
+                            <label class="col-xs-2 control-label" for="category">Category</label>
+                            <div class="col-xs-8">
+                                <select th:value="${watch.category}" id="category" class="form-control" name="category">
+                                    <option value="" select="selected" disabled="disabled">Please select an option...</option>
+                                    <option value="classic">Classic</option>
+                                    <option value="bigWatch">Big watch</option>
+                                    <option value="digital">Digital</option>
+                                    <option value="Diving">Diving</option>
+                                    <option value="military">Military</option>
+                                    <option value="glamour">Glamour</option>
+                                    <option value="pocket">Pocket</option>
+                                    <option value="skeleton">Skeleton</option>
+                                    <option value="swimWatch">Smart watch</option>
+                                    <option value="square">Square</option>
+                                    <option value="thin">Thin</option>
+                                    <option value="unusual">Unusual</option>
+                                    <option value="vintage">Vintage</option>
+                                    <option value="wood">Wood</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--Description-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="description">* Description</label>
+                            <div class="col-md-8">
+                                <textarea class="form-control" id="description" name="description" rows="5" th:value="${watch.description}" th:text="${watch.description}" placeholder="Description">
+                                </textarea>
+                                <span class="help-block">Watch description</span>
+                            </div>
+                        </div>
+                        <!--In stock number-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="inStockNumber">* In stock number</label>
+                            <div class="col-md-8">
+                                <input type="number" name="inStockNumber" class="form-control" id="inStockNumber" th:value="${watch.inStockNumber}" placeholder="InStockNumber" />
+                                <span class="help-block">In stock number of watches</span>
+                            </div>
+                        </div>
+
+                        <!--Dail color-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="dailColor">* Dail color</label>
+                            <div class="col-md-8">
+                                <input type="text" name="dailColor" class="form-control" id="dailColor" th:value="${watch.dailColor}" placeholder="DailColor" />
+                                <span class="help-block">Dail color</span>
+                            </div>
+                        </div>
+                        <!--Case size-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="caseSize">* Case size</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="caseSize" class="form-control" id="caseSize" th:value="${watch.caseSize}" placeholder="CaseSize" />
+                                <span class="help-block">Case size</span>
+                            </div>
+                        </div>
+                        <!--Case shape-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="caseShape">* Case shape</label>
+                            <div class="col-md-8">
+                                <input type="text" name="caseShape" class="form-control" id="caseShape" th:value="${watch.caseShape}" placeholder="CaseShape" />
+                                <span class="help-block">Case shape</span>
+                            </div>
+                        </div>
+                        <!--Case material-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="caseMaterial">* Case material</label>
+                            <div class="col-md-8">
+                                <input type="text" name="caseMaterial" class="form-control" id="caseMaterial" th:value="${watch.caseMaterial}" placeholder="CaseMaterial" />
+                                <span class="help-block">Case material</span>
+                            </div>
+                        </div>
+                        <!--Case thickness-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="caseThikness">* Case thikness</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="caseThikness" class="form-control" id="caseThikness" th:value="${watch.caseThikness}" placeholder="CaseThikness" />
+                                <span class="help-block">Case thikness</span>
+                            </div>
+                        </div>
+                        <!--Crystal type-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="crystalType">* Crystal type</label>
+                            <div class="col-md-8">
+                                <input type="text" name="crystalType" class="form-control" id="crystalType" th:value="${watch.crystalType}" placeholder="CrystalType" />
+                                <span class="help-block">Crystal type</span>
+                            </div>
+                        </div>
+                        <!--Mechanism-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="mechanism">* Mechanism</label>
+                            <div class="col-md-8">
+                                <input type="text" name="mechanism" class="form-control" id="mechanism" th:value="${watch.mechanism}" placeholder="Mechanism" />
+                                <span class="help-block">Watch mechanism</span>
+                            </div>
+                        </div>
+                        <!--Strap width-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="strapWidth">* Strap width</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="strapWidth" class="form-control" id="strapWidth" th:value="${watch.strapWidth}" placeholder="StrapWidth" />
+                                <span class="help-block">Strap width</span>
+                            </div>
+                        </div>
+                        <!--Water resistance-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="waterResistance">* Water resistance</label>
+                            <div class="col-md-8">
+                                <input type="text" name="waterResistance" class="form-control" id="waterResistance" th:value="${watch.waterResistance}" placeholder="WaterResistance" />
+                                <span class="help-block">Water resistance</span>
+                            </div>
+                        </div>
+                        <!--Shipping weight-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="shippingWeight">* Shipping weight</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="shippingWeight" class="form-control" id="shippingWeight" th:value="${watch.shippingWeight}" placeholder="ShippingWeight" />
+                                <span class="help-block">Shipping weight</span>
+                            </div>
+                        </div>
+                        <!--list price-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="listPrice">* List price</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="listPrice" class="form-control" id="listPrice" th:value="${watch.listPrice}" placeholder="ListPrice" />
+                                <span class="help-block">List price</span>
+                            </div>
+                        </div>
+                        <!--Our price-->
+                        <div class="form-group"> 
+                            <label class="col-md-2 control-label" for="ourPrice">* Our price</label>
+                            <div class="col-md-8">
+                                <input type="number" step="0.01" name="ourPrice" class="form-control" id="ourPrice" th:value="${watch.ourPrice}" placeholder="OurPrice" />
+                                <span class="help-block">Our price</span>
+                            </div>
+                        </div>
+                        <!--Status-->
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="status">Status</label>
+                            <div class="col-md-8">
+                                <label><input value="true" type="radio" name="active"
+                                              th:checked="${watch.active}" /> Active </label>
+                                <label>
+                                    <input
+                                        value="false" type="radio" name="active" th:checked="${!watch.active}"/>
+                                    Inactive </label> <span class="help-block">Whether the watch is
+                                    active or inactive</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label" for="albums">* Select images</label>
+                            <div class="col-md-8">
+                                <input type="file" name="albums" multiple="multiple"/>
+                                <span class="help-block">Albums</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-8" style="margin-bottom: 30px;">
+                                <button type="submit" class="btn btn-success">Update watch info</button>
+                                <a class="btn btn-danger" th:href="@{/adminportal/watch/watchInfo(id=${watch.id})}">Cancel</a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div th:replace="common/adminHeader :: body-bottom-scripts"/>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var wi = document.getElementById("watchImage");
+            function change() {
+                $('#changeImage').css('display', 'inline-block');
+            }
+        </script>
+    </body>
+</html>

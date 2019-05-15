@@ -1,0 +1,20 @@
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head th:replace="common/header :: common-header"/>
+    <body>
+        <div th:replace="common/header :: navbar"/>
+        <div class="container">
+            <div class="row" style="margin-top: 50px;">
+                <div class="alert alert-warning" th:if="${WatchDetailsException}">Watch data unavailable at the moment, please try again later!</div>
+                <div class="alert alert-warning" th:if="${UpdateUserInfoException}">Cannot update user info, please try again later!</div>
+                <div class="alert alert-warning" th:if="${CreditCardException}">Cannot save credit card info, please try again later!</div>
+                <div class="alert alert-warning" th:if="${shippingAddressException}">Cannot save user address info, please try again later!</div>
+                <div class="alert alert-warning" th:if="${addWatchException}">Cannot add item to cart, please try again later!</div>
+                <div class="alert alert-warning" th:if="${orderException}">Cannot put an order, please try again later!</div>
+                <div class="alert alert-warning" th:if="${commentException}">Cannot add a comment, please try again later!</div>
+                <div class="alert alert-warning" th:if="${rateException}">Cannot record your rate, please try again later!</div>
+            </div>
+        </div>
+        <div th:replace="common/header :: footer"/> 
+        <div th:replace="common/header :: body-bottom-scripts" />
+    </body>
+</html>

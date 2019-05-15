@@ -1,0 +1,32 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head xmlns:th="http://www.thymeleaf.org">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Watch Shop</title>
+
+        <!--         Bootstrap core CSS -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+
+        <!--         Custom styles for this template -->
+        <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/> 
+
+    </head>
+
+    <body style="background-color: #606060">
+
+        <div th:replace="common/adminHeader :: navbar" />
+        <div class="container">
+            <div class="alert alert-warning" th:if="${WatchDetailsException}">Watch data unavailable at the moment, please try again later!</div>
+            <div class="alert alert-warning" th:if="${WatchUpdateException}">Could not update Watch info, please try again later!</div>
+            <div class="alert alert-warning" th:if="${WatchSaveException}">Could not save new Watch, please try again later!</div>
+            <div class="alert alert-warning" th:if="${WatchDeleteException}">Could not delete Watch, please try again later!</div>
+            <div class="alert alert-warning" th:if="${removeCommentException}">Could not delete comment, please try again later!</div>
+        </div>
+        <div th:replace="common/adminHeader :: body-bottom-scripts"/>
+
+    </body>
+</html>

@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+    <head th:replace="common/header :: common-header" />
+
+    <body style="background-color: #606060">
+        <div th:replace="common/header :: navbar" />
+
+        <div class="container">
+            <div>
+                <h3 style="font-family: 'Times New Roman', Times, serif;">My Account</h3>
+            </div> 
+            <hr style="margin-top: -5px; position: absolute; width: 90%; height: 3px; background-color: #4d0000; z-index: -1;" />
+            <div class="row" style="margin-top:10px;">
+                <div class="col-xs-12">
+                    <div class="alert alert-success">
+                        <h3><i class="fa fa-check" aria-hidden="true" style="color: limegreen;"></i>Thank You, Your order has been placed.</h3>
+                        <h4>The estimated delivery date is <span th:text="${estimatedDeliveryDate}"></span></h4>
+                    </div>
+                    <h3>List of item(s):</h3>
+                    <div class="row" th:each="cartItem: ${cartItemList}">
+
+                        <hr/>
+                        <div class="col-xs-2">
+                            <a th:href="@{/watchDetails(id=${cartItem.watch.id})}">
+                                <img class="img-responsive" th:src="@{/image/watch/}+${cartItem.watch.id}+'_a.png'" style="width: 70px; height: 100px;"/>
+                            </a>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="center-block">
+                                <span th:text="${cartItem.watch.brand}+' '+${cartItem.watch.name}"></span>
+                            </div>
+                        </div> 
+                        <div class="col-xs-2">
+                            <h5 style="color: #db3208; font-size: large;">$<span th:text="${cartItem.watch.ourPrice}" th:style="${cartItem.watch.inStockNumber}==0? 'text-decoration: line-through' : ''"></span></h5>
+                        </div>
+                        <div class="col-xs-2">
+                            <h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of container -->
+
+    <div th:replace="common/header :: footer"/> 
+    <div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

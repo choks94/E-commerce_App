@@ -1,0 +1,93 @@
+ 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+    <head th:replace="common/header :: common-header" />
+
+    <body style="background-color: #606060;">
+        <div th:replace="common/header :: navbar" />
+
+        <div class="container">
+            <div th:if="${user != null}">
+                <h3 style="font-family: 'Times New Roman', Times, serif;"><span th:text="${#strings.toUpperCase(user.username)}"></span></h3>
+            </div>
+            <hr style="margin-top: -5px; position: absolute; width: 90%; height: 3px; background-color: #4d0000; z-index: -1;" />
+            <div class="row">
+                <div class="col-xs-3">
+                    <h3><label for="category">Category</label></h3>
+                    <div class="list-group" id="category" style="margin-top: 35px;">
+                        <a th:href="@{/watchList(category='all')}" th:classappend="${activeAll}? 'active'" class="list-group-item">All</a>
+                        <a th:href="@{/searchByCategory(category='BigWatch')}" th:classappend="${activeBigWatch}? 'active'" class="list-group-item">Big Watch</a>
+                        <a th:href="@{/searchByCategory(category='Digital')}" th:classappend="${activeDigital}? 'active'" class="list-group-item">Digital</a>
+                        <a th:href="@{/searchByCategory(category='Diving')}" th:classappend="${activeDiving}? 'active'" class="list-group-item">Diving</a>
+                        <a th:href="@{/searchByCategory(category='Military')}" th:classappend="${activeMilitary}? 'active'" class="list-group-item">Military</a>
+                        <a th:href="@{/searchByCategory(category='Glamour')}" th:classappend="${activeGlamour}? 'active'" class="list-group-item">Glamour</a>
+                        <a th:href="@{/searchByCategory(category='Classic')}" th:classappend="${activeClassic}? 'active'" class="list-group-item">Classic</a>
+                        <a th:href="@{/searchByCategory(category='Pocket')}" th:classappend="${activePocket}? 'active'" class="list-group-item">Pocket</a>
+                        <a th:href="@{/searchByCategory(category='Seleton')}" th:classappend="${activeSkeleton}? 'active'" class="list-group-item">Skeleton</a>
+                        <a th:href="@{/searchByCategory(category='SmartWatch')}" th:classappend="${activeSmartWatch}? 'active'" class="list-group-item">Smart Watch</a>
+                        <a th:href="@{/searchByCategory(category='SwimWatch')}" th:classappend="${activeSwimWatch}? 'active'" class="list-group-item">Swim Watch</a>
+                        <a th:href="@{/searchByCategory(category='Square')}" th:classappend="${activeSquare}? 'active'" class="list-group-item">Square</a>
+                        <a th:href="@{/searchByCategory(category='Thin')}" th:classappend="${activeThin}? 'active'" class="list-group-item">Thin</a>
+                        <a th:href="@{/searchByCategory(category='Unusual')}" th:classappend="${activeUnusual}? 'active'" class="list-group-item">Unusual</a>
+                        <a th:href="@{/searchByCategory(category='Vintage')}" th:classappend="${activeVintage}? 'active'" class="list-group-item">Vintage</a>
+                        <a th:href="@{/searchByCategory(category='Wood')}" th:classappend="${activeWood}? 'active'" class="list-group-item">Wood</a>
+                    </div>
+                </div>
+                <div class="col-xs-9">
+                    <div class="well well-sm">
+                        <strong>Display</strong>
+                        <div class="btn-group">
+                            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+                                </span>List</a>
+                            <a href="#" id="grid" class="btn btn-default btn-sm"><span
+                                    class="glyphicon glyphicon-th"></span>Grid</a>
+                        </div>
+                    </div>
+                    <div class="row list-group" id="products">
+                        <div th:if="${emptyList}">
+                            <h5 style="font-style: italic; background-color: darkred;">No results found.</h5>
+                        </div>
+                        <div data-th-each="watch, iStat: ${watchPage.content}">
+                            <div class="item col-xs-4">
+                                <div id="product" class="thumbnail watchspace">
+
+                                    <a th:href="@{/watchDetails?id=}+${watch.id}"><img class="img-rounded" th:src="@{/image/watch/}+${watch.id}+'_a.png'"/></a>
+
+                                    <div class="caption">
+                                        <a th:href="@{/watchDetails?id=}+${watch.id}"><h4 th:text="${watch.brand}+' '+${watch.name}"></h4></a><a th:href="@{/watchDetails?id=}+${watch.id}"><h4 tx:text="${watch.name}"></h4></a>
+                                        <h5>Case size: <span th:text="${watch.caseSize}"></span>mm</h5>
+                                        <h5>Case shape: <span th:text="${watch.caseShape}"></span></h5>
+                                        <h5>Case material: <span th:text="${watch.caseMaterial}"></span></h5>
+                                        <h5>Case thickness: <span th:text="${watch.caseThikness}"></span>mm</h5>
+                                        <h5>Crystal type: <span th:text="${watch.crystalType}"></span></h5>
+                                        <h5>Movement: <span th:text="${watch.mechanism}"></span></h5>
+                                        <h5>Strap width: <span th:text="${watch.strapWidth}"></span></h5>
+                                        <div class="row" style="margin-bottom: -25px;">
+                                            <div class="col-xs-12">
+                                                <span class="lead" style="font-size: x-large; color: #db3208; float: right; margin-top: -10px">$<span th:text="${#numbers.formatDecimal(watch.ourPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                                                <span style="text-decoration: line-through; float: right;">$<span th:text="${#numbers.formatDecimal(watch.listPrice, 0, 'COMMA', 2, 'POINT')}"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="width: 50%; margin: auto; margin-bottom: 60px;">
+                        <div class="col-xs-12" style="position: absolute;">
+                            <div th:if="${watchPage.totalPages > 0}" class="pagination well well-sm" th:each="pageNumber : ${pageNumbers}">
+                                <div id = "selected">
+                                    <h3 id="number"><strong><a th:href="@{/watchList(size=${watchPagesize}, page=${pageNumber})}" th:text="${pageNumber}" th:class="${pageNumber==watchPage.number + 1} ? active"></strong></a></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end of container --> 
+
+        <div th:replace="common/header :: body-bottom-scripts" />
+        <div th:replace="common/header :: footer"/> 
+    </body>
+</html>

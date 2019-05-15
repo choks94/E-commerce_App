@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head xmlns:th="http://www.thymeleaf.org">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <title>Watch Shop</title>
+
+        <!--         Bootstrap core CSS -->
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+
+        <!--         Custom styles for this template -->
+        <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css"/> 
+
+    </head>
+
+    <body style="background-color: #606060">
+
+        <div>
+            <div th:replace="common/adminHeader :: navbar" />
+        </div>
+            
+        <div th:replace="common/adminHeader :: body-bottom-scripts"/>
+    </body>
+</html>
