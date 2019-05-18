@@ -182,7 +182,6 @@ public class HomeController {
     public String addCommentPost(
             @ModelAttribute("watch") Watch watch,
             @ModelAttribute("userComment") UserComment userComment,
-            //            Principal principal,
             Authentication authentication,
             Model model) {
 
@@ -218,7 +217,6 @@ public class HomeController {
             @ModelAttribute("rating") String userRate,
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
         User user = null;
         try {
@@ -264,7 +262,6 @@ public class HomeController {
     public String watchDeatils(
             @PathParam("id") Long id, Model model,
             Authentication authentication
-    //            Principal principal
     ) {
 
 //        if (principal != null) {

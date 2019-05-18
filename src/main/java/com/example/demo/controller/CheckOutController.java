@@ -203,7 +203,6 @@ public class CheckOutController {
             @ModelAttribute("payment") Payment payment,
             @ModelAttribute("billingSameAsShipping") String billingSameAsShipping,
             @ModelAttribute("shippingMethod") String shippingMethod,
-            //            Principal principal,
             Authentication authentication,
             Model model) {
 

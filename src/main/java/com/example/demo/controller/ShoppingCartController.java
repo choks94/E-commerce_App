@@ -77,7 +77,6 @@ public class ShoppingCartController {
             @ModelAttribute("qty") String qty,
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
         User user = null;
         try {
