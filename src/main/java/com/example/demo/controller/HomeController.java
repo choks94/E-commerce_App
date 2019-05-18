@@ -560,7 +560,6 @@ public class HomeController {
             @ModelAttribute("userBilling") UserBilling userBilling,
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
 
         User user = new User();
@@ -597,7 +596,6 @@ public class HomeController {
             @ModelAttribute("userShipping") UserShipping userShipping,
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
 
         User user = new User();
