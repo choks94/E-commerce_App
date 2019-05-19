@@ -121,21 +121,21 @@ public class UserServiceImpl implements UserService {
         save(user);
     }
 
-    @Override
-    public void setUserDefaultPayment(long id, User user) {
-
-        List<UserPayment> userPaymentList = (List<UserPayment>) userPaymentRepository.findAll();
-
-        for (UserPayment userPayment : userPaymentList) {
-            if (userPayment.getId() == id) {
-                userPayment.setDefaultPayment(true);
-                userPaymentRepository.save(userPayment);
-            } else {
-                userPayment.setDefaultPayment(false);
-                userPaymentRepository.save(userPayment);
-            }
-        }
-    }
+//    @Override
+//    public void setUserDefaultPayment(long id, User user) {
+//
+//        List<UserPayment> userPaymentList = (List<UserPayment>) userPaymentRepository.findAll();
+//
+//        for (UserPayment userPayment : userPaymentList) {
+//            if (userPayment.getId() == id) {
+//                userPayment.setDefaultPayment(true);
+//                userPaymentRepository.save(userPayment);
+//            } else {
+//                userPayment.setDefaultPayment(false);
+//                userPaymentRepository.save(userPayment);
+//            }
+//        }
+//    }
 
     @Override
     public void updateUserShipping(UserShipping userShipping, User user) {
@@ -146,21 +146,21 @@ public class UserServiceImpl implements UserService {
         save(user);
     }
 
-    @Override
-    public void setUserDefaultShipping(long defaultShippingId, User user) {
-        
-        List<UserShipping> userShippingList = (List<UserShipping>) userShippingRepository.findAll();
-
-        for (UserShipping userShipping : userShippingList) {
-            if (userShipping.getId() == defaultShippingId) {
-                userShipping.setUserShippingDefault(true);
-                userShippingRepository.save(userShipping);
-            } else {
-                userShipping.setUserShippingDefault(false);
-                userShippingRepository.save(userShipping);
-            }
-        }
-    }
+//    @Override
+//    public void setUserDefaultShipping(long defaultShippingId, User user) {
+//        
+//        List<UserShipping> userShippingList = (List<UserShipping>) userShippingRepository.findAll();
+//
+//        for (UserShipping userShipping : userShippingList) {
+//            if (userShipping.getId() == defaultShippingId) {
+//                userShipping.setUserShippingDefault(true);
+//                userShippingRepository.save(userShipping);
+//            } else {
+//                userShipping.setUserShippingDefault(false);
+//                userShippingRepository.save(userShipping);
+//            }
+//        }
+//    }
 
     @Override
     public Optional<User> findById(long id) {

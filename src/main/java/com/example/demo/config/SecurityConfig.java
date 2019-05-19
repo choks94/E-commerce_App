@@ -1,6 +1,6 @@
 package com.example.demo.config;
 
-import com.example.demo.service.impl.UserSecurityService;
+import com.example.demo.service.impl.UserSecurityServiceImpl;
 import com.example.demo.utility.SecurityUtility;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     OAuth2ClientContext oauth2ClientContext;
 
     @Autowired
-    private UserSecurityService userSecurityService;
+    private UserSecurityServiceImpl userSecurityService;
 
     @Autowired
     private CustomLoginSuccessHandler customLoginSuccessHandler;

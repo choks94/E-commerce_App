@@ -21,7 +21,7 @@ import com.example.demo.service.UserRatingService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.UserShippingService;
 import com.example.demo.service.WatchService;
-import com.example.demo.service.impl.UserSecurityService;
+import com.example.demo.service.impl.UserSecurityServiceImpl;
 import com.example.demo.utility.ChechGUser;
 import com.example.demo.utility.EmailConfig;
 import com.example.demo.utility.MailConstructor;
@@ -87,7 +87,7 @@ public class HomeController {
     private UserService userService;
 
     @Autowired
-    private UserSecurityService userSecurityService;
+    private UserSecurityServiceImpl userSecurityService;
 
     @Autowired
     private WatchService watchService;
