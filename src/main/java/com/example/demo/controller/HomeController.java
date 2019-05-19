@@ -690,51 +690,51 @@ public class HomeController {
         }
     }
 
-    @PostMapping("/setDefaultPayment")
-    public String setDefaultPaymentPost(
-            @ModelAttribute("defaultUserPaymentId") long defaultPayment,
-            Authentication authentication,
-            //            Principal principal,
-            Model model) {
+//    @PostMapping("/setDefaultPayment")
+//    public String setDefaultPaymentPost(
+//            @ModelAttribute("defaultUserPaymentId") long defaultPayment,
+//            Authentication authentication,
+//            //            Principal principal,
+//            Model model) {
+//
+//        User user = check.getUserInfo(authentication);
+////        User user = userService.findByUsername(principal.getName());
+//        userService.setUserDefaultPayment(defaultPayment, user);
+//
+//        model.addAttribute("user", user);
+//        model.addAttribute("userPayment", user.getUserPayment());
+//        model.addAttribute("userShipping", user.getUserShipping());
+//        model.addAttribute("orderList", user.getOrderList());
+//
+//        model.addAttribute("listOfCreditCards", true);
+//        model.addAttribute("classActiveBilling", true);
+//        model.addAttribute("listOfShippingAddresses", true);
+//
+//        return "myProfile";
+//    }
 
-        User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
-        userService.setUserDefaultPayment(defaultPayment, user);
-
-        model.addAttribute("user", user);
-        model.addAttribute("userPayment", user.getUserPayment());
-        model.addAttribute("userShipping", user.getUserShipping());
-        model.addAttribute("orderList", user.getOrderList());
-
-        model.addAttribute("listOfCreditCards", true);
-        model.addAttribute("classActiveBilling", true);
-        model.addAttribute("listOfShippingAddresses", true);
-
-        return "myProfile";
-    }
-
-    @PostMapping("/setDefaultShippingAddress")
-    public String setDefaultShippingAddressPost(
-            @ModelAttribute("defaultShippingAddressId") long defaultShippingId,
-            Authentication authentication,
-            //            Principal principal,
-            Model model) {
-
-        User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
-        userService.setUserDefaultShipping(defaultShippingId, user);
-
-        model.addAttribute("user", user);
-        model.addAttribute("userPayment", user.getUserPayment());
-        model.addAttribute("userShipping", user.getUserShipping());
-        model.addAttribute("orderList", user.getOrderList());
-
-        model.addAttribute("listOfCreditCards", true);
-        model.addAttribute("classActiveShipping", true);
-        model.addAttribute("listOfShippingAddresses", true);
-
-        return "myProfile";
-    }
+//    @PostMapping("/setDefaultShippingAddress")
+//    public String setDefaultShippingAddressPost(
+//            @ModelAttribute("defaultShippingAddressId") long defaultShippingId,
+//            Authentication authentication,
+//            //            Principal principal,
+//            Model model) {
+//
+//        User user = check.getUserInfo(authentication);
+////        User user = userService.findByUsername(principal.getName());
+//        userService.setUserDefaultShipping(defaultShippingId, user);
+//
+//        model.addAttribute("user", user);
+//        model.addAttribute("userPayment", user.getUserPayment());
+//        model.addAttribute("userShipping", user.getUserShipping());
+//        model.addAttribute("orderList", user.getOrderList());
+//
+//        model.addAttribute("listOfCreditCards", true);
+//        model.addAttribute("classActiveShipping", true);
+//        model.addAttribute("listOfShippingAddresses", true);
+//
+//        return "myProfile";
+//    }
 
     @RequestMapping("/removeCreditCard")
     private String removeCreditCard(
