@@ -86,8 +86,15 @@
                                             <div class="well well-sm" style="margin-right: 5px; margin-left: 5px; margin-bottom: 5px; margin-top: 5px;">
                                                 <div class="row">
                                                     <div class="col-xs-12 col-md-6 text-center">
-                                                        <h1 class="rating-num">
-                                                            <span th:text="${#numbers.formatDecimal(avg, 0, 'COMMA', 2, 'POINT')}"></span></h1>
+
+                                                        <div th:if="*{avg!=0}">
+                                                            <h1 class="rating-num">
+                                                                <span th:text="${#numbers.formatDecimal(avg, 0, 'COMMA', 2, 'POINT')}"></span>
+                                                            </h1>
+                                                        </div>
+                                                        <div th:if="*{avg==0}">
+                                                            <h4><span>Be first to rate</span></h4>
+                                                        </div>
                                                         <div class="rating">
                                                             <span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
                                                             </span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star">
