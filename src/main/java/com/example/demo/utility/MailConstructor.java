@@ -40,8 +40,6 @@ public class MailConstructor {
         email.setSubject("Watches Store - New User");
         email.setText(url + message);
         email.setFrom("scolic994@gmail.com");
-
-//         email.setFrom(env.getProperty("support.email"));
         return email;
 
     }

@@ -174,7 +174,6 @@ public class CheckOutController {
 
         try {
             shippingStandardCost = restTemplate.getForObject(env.getProperty("shipping.rest-service") + "/getStandardPrice", Double.class);
-            System.out.println("===================================" + shippingStandardCost);
             model.addAttribute("shippingStandardCost", shippingStandardCost);
             model.addAttribute("shippingServiceAvailable", true);
         } catch (Exception e) {
@@ -183,9 +182,9 @@ public class CheckOutController {
         }
 
         try {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + env.getProperty("shipping.rest-service"));
+            
             shippingPremiumCost = restTemplate.getForObject(env.getProperty("shipping.rest-service") + "/getPremiumPrice", Double.class);
-            System.out.println("===================================" + shippingPremiumCost);
+            
             model.addAttribute("shippingPremiumCost", shippingPremiumCost);
             model.addAttribute("shippingServiceAvailable", true);
         } catch (Exception e) {
@@ -211,7 +210,6 @@ public class CheckOutController {
             user = check.getUserInfo(authentication);
         } catch (Exception e) {
             model.addAttribute("orderException", true);
-            System.out.println("1");
             return "errorPageCustomer";
             
         }
@@ -224,7 +222,6 @@ public class CheckOutController {
             cartItemList = cartItemService.findByShoppingCart(shoppingCart);
         } catch (Exception e) {
             model.addAttribute("orderException", true);
-            System.out.println("2");
             return "errorPageCustomer";
         }
         model.addAttribute("cartItemList", cartItemList);
@@ -271,7 +268,6 @@ public class CheckOutController {
             order = orderService.createOrder(shoppingCart, shippingAddress, billingAddress, payment, shippingMethod, shippingPrice, user);
         } catch (Exception e) {
             model.addAttribute("orderException", true);
-            System.out.println("3");
             return "errorPageCustomer";
         }
 //        order.setShippingPrice(shippingPrice);
@@ -305,7 +301,6 @@ public class CheckOutController {
             shoppingCartService.clearShoppingCart(shoppingCart);
         } catch (Exception e) {
             model.addAttribute("orderException", true);
-            System.out.println("4");
             return "errorPageCustomer";
         }
 

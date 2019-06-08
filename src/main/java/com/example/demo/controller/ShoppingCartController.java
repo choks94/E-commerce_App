@@ -53,11 +53,9 @@ public class ShoppingCartController {
     public String shoppingCart(
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         ShoppingCart shoppingCart = user.getShoppingCart();
 
         List<CartItem> cartItemList = cartItemService.findByShoppingCart(shoppingCart);
@@ -85,7 +83,6 @@ public class ShoppingCartController {
             model.addAttribute("addWatchException", true);
             return "errorPageCustomer";
         }
-//        User user = userService.findByUsername(principal.getName());
         try {
             Optional<Watch> watchOpt = watchService.findOne(watch.getId());
             watch = watchOpt.get();
@@ -104,8 +101,6 @@ public class ShoppingCartController {
 
         model.addAttribute("user", user);
         if (quantity > watch.getInStockNumber()) {
-            System.out.println("QTY: " + quantity);
-            System.out.println("In stock number: " + watch.getInStockNumber());
 
             model.addAttribute("notEnoughtInStock", true);
             return "forward:/watchDetails?id=" + watch.getId(); 
@@ -128,11 +123,9 @@ public class ShoppingCartController {
             @ModelAttribute("id") long cartItemId,
             @ModelAttribute("qty") int qty,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<CartItem> cartItemOpt = cartItemService.findById(cartItemId);
         CartItem cartItem = cartItemOpt.get();
         cartItem.setQty(qty);
@@ -147,14 +140,12 @@ public class ShoppingCartController {
     public String removeItem(@RequestParam("id") long id,
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
         Optional<CartItem> cartItemOpt = cartItemService.findById(id);
         CartItem cartItem = cartItemOpt.get();
         cartItemService.removeCartItem(cartItem);
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
         return "forward:/shoppingCart/cart";
     }

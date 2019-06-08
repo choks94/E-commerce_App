@@ -92,8 +92,6 @@ public class PaymentController {
         return "index";
     }
 
-//    @ModelAttribute("shippingMethod") String shippingMethod,
-//            @ModelAttribute("payment") com.example.demo.domain.Payment usersPayment
     @RequestMapping(method = RequestMethod.POST, value = "pay")
     public String payPost(HttpServletRequest request,
             @RequestParam("total") String total,
@@ -111,8 +109,7 @@ public class PaymentController {
         ShoppingCart sc = user.getShoppingCart();
         shoppingCartId = sc.getId();
         shippingMet = shippingMethod;
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" + shippingMethod);
-//        pym = usersPayment;
+
         String cancelUrl = URLUtility.getBaseURl(request) + "/" + PAYPAL_CANCEL_URL;
         String successUrl = URLUtility.getBaseURl(request) + "/" + PAYPAL_SUCCESS_URL;
         Double tot = Double.parseDouble(total);
@@ -128,7 +125,6 @@ public class PaymentController {
                     successUrl);
             for (Links links : payment.getLinks()) {
                 if (links.getRel().equals("approval_url")) {
-//                    Payer payer = payment.getPayer();
                     return "redirect:" + links.getHref();
                 }
             }
@@ -151,7 +147,6 @@ public class PaymentController {
             @RequestParam("PayerID") String payerId,
             Authentication authentication,
             @ModelAttribute("shippingMethod") String shippingMethod,
-            //            Principal principal, 
             Model model) {
         User user = null;
         try {
@@ -161,21 +156,15 @@ public class PaymentController {
             return "errorPageCustomer";
         }
 
-//        User user = userService.findByUsername(principal.getName());
         ShoppingCart shoppingCart = user.getShoppingCart();
         List<CartItem> cartItemList = cartItemService.findByShoppingCart(shoppingCart);
         model.addAttribute("cartItemList", cartItemList);
 
         try {
-            System.out.println("========================================" + user);
             Payment payment = paypalService.executePayment(paymentId, payerId);
-            System.out.println("##########################" + payment.getPayer());
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@" + payment);
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!" + payment.getCart());
             Payer payer = payment.getPayer();
             PayerInfo payerInfo = payer.getPayerInfo();
-
-            System.out.println("~~~~~~~~~~~~~~~~~~~~~~" + payerInfo.getShippingAddress());
+            
             BillingAddress billingAddress = new BillingAddress();
             ShippingAddress shippingAddress = new ShippingAddress();
             com.example.demo.domain.Payment pymnt = new com.example.demo.domain.Payment();
@@ -197,7 +186,6 @@ public class PaymentController {
 
             if (payment.getState().equals("approved")) {
 
-//                paymentService.save(pym);
                 RestTemplate restTemplate = new RestTemplate();
                 double shippingPrice = 0;
                 if (shippingMet.equals("groundShipping")) {
@@ -236,14 +224,6 @@ public class PaymentController {
                     return "errorPageCustomer";
                 }
 
-//                LocalDate today = LocalDate.now();
-//                LocalDate estimatedDeliveryDate;
-//
-//                if (shippingMet.equals("standardShipping")) {
-//                    estimatedDeliveryDate = today.plusDays(5);
-//                } else {
-//                    estimatedDeliveryDate = today.plusDays(3);
-//                }
                 model.addAttribute("estimatedDeliveryDate", shippingOrder.getEstimatedDeliveryDate());
                 return "orderSubmitted";
             }

@@ -69,8 +69,6 @@ public class OrderServiceImpl implements OrderService {
         paymentService.save(payment);
         order.setBillingAddress(billingAddress);
         order.setUser(user);
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + order);
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" + user);
 
         order = orderRepository.save(order);
         return order;

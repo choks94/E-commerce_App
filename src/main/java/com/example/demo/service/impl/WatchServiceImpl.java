@@ -125,13 +125,7 @@ public class WatchServiceImpl implements WatchService {
 
         Page<Watch> watchPage
                 = new PageImpl<Watch>(list, PageRequest.of(currentPage, pageSize), activeWatches.size());
-//        List<Watch> activeWatchList = new ArrayList<>();
-//
-//        for (Watch watch : watches) {
-//            if (watch.isActive()) {
-//                activeWatchList.add(watch);
-//            }
-//        }
+
         return watchPage;
     }
 

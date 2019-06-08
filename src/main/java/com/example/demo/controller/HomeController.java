@@ -133,31 +133,7 @@ public class HomeController {
         int pageSize = size.orElse(9);
 
         Page<Watch> watchPage = watchService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-
-//        if (authentication instanceof OAuth2Authentication) {
-//            OAuth2Authentication auth = (OAuth2Authentication) authentication;
-//            System.out.println("----------------------------" + auth.getDetails());
-//            UsernamePasswordAuthenticationToken details = (UsernamePasswordAuthenticationToken) auth.getUserAuthentication();
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + details.getName());
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + details.getDetails());
-//            String dets = details.getDetails().toString();
-//            String email = dets.split("email=")[1].split(",")[0];
-//            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + email);
-//            String firstName = dets.split("given_name=")[1].split(",")[0];
-//            String lastName = dets.split("family_name=")[1].split(",")[0];
-//            System.out.println("First: "+firstName+" Last: "+lastName);
-//            
-//        } else {
-//            System.out.println("++++++++++++++++++++++++++++" + authentication);
-//            System.out.println("***************************" + authentication.getName());
-//            User user = userService.findByUsername(authentication.getName());
-//        }
-////        List<Watch> watchList = watchService.findAll();
-////        if (principal != null) {
-////            String username = principal.getName();
-////            User user = userService.findByUsername(username);
-////            model.addAttribute("user", user);
-////        }
+        
         if (authentication != null) {
             User user = check.getUserInfo(authentication);
             if (user != null) {
@@ -303,7 +279,6 @@ public class HomeController {
         }
 
         model.addAttribute("album", album);
-//        System.out.println("******************************************************" + album);
 
         Watch watch = new Watch();
         try {
@@ -323,8 +298,7 @@ public class HomeController {
         List<Integer> qtyList = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         Set<UserComment> userCommentList = userCommentService.findByWatch(watch);
-
-        System.out.println("User comments: " + userCommentList);
+        
         model.addAttribute("userCommentList", userCommentList);
         model.addAttribute("qtyList", qtyList);
         model.addAttribute("qty", 1);
@@ -364,7 +338,7 @@ public class HomeController {
         double threesPc = 0;
         double foursPc = 0;
         double fivesPc = 0;
-//        System.out.println(""+ones+""+twoos+""+threes+""+fours+""+fives);
+
         if (noOfRaters != 0) {
             avgRate = (ones * 1 + twoos * 2 + threes * 3 + fours * 4 + fives * 5) / (double) noOfRaters;
 
@@ -413,26 +387,9 @@ public class HomeController {
         userService.createPasswordResetTokenForUser(user, token);
 
         String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-//        String url = appUrl + "/newUser?token=" + token;
-//        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-//        sender.setHost(emailConfig.getHost());
-//        sender.setPort(emailConfig.getPort());
-//        sender.setUsername(emailConfig.getUsername());
-//        sender.setPassword(emailConfig.getPassword());
-//
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setFrom("scolic994@gmail.com");
-//        mailMessage.setTo(email);
-//        mailMessage.setSubject("Password reset token");
-//        mailMessage.setText("Dear User, use this password: \n" + password + "\nand copy it to apropriate field on this link:\n" + url + "\n in order to reset password");
-//
-//        System.out.println(emailConfig.getHost() + " " + emailConfig.getPort() + " " + emailConfig.getPassword() + " " + emailConfig.getUsername());
-//        sender.send(mailMessage);
-
         SimpleMailMessage emailToSend = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
         mailSender.send(emailToSend);
-//        SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
-//        mailSender.send(newEmail);
+
         model.addAttribute("forgetPasswordEmailSent", "true");
 
         return "myAccount";
@@ -441,20 +398,14 @@ public class HomeController {
     @RequestMapping("/myProfile")
     public String myProfile(Model model,
             Authentication authentication
-    //            Principal principal 
     ) {
-//        User user = userService.findByUsername(principal.getName());
 
         User user = check.getUserInfo(authentication);
 
         model.addAttribute("user", user);
-        System.out.println("###########################" + user);
         model.addAttribute("userPayment", user.getUserPayment());
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + user.getUserPayment());
         model.addAttribute("userShipping", user.getUserShipping());
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + user.getUserShipping().getId());
         model.addAttribute("userBilling", user.getUserPayment().getUserBilling());
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$" + user.getUserPayment().getUserBilling());
         RestTemplate restTemplate = new RestTemplate();
         List<Order> orderList = user.getOrderList();
         try {
@@ -474,8 +425,6 @@ public class HomeController {
 
         model.addAttribute("orderList", orderList);
 
-//        UserShipping userShipping = new UserShipping();
-//        model.addAttribute("userShipping", userShipping);
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("listOfShippingAddresses", true);
         model.addAttribute("classActiveEdit", true);
@@ -483,54 +432,12 @@ public class HomeController {
         return "myProfile";
     }
 
-//    @RequestMapping("/listOfCreditCards")
-//    public String listOfCreditCards(
-//            Model model,
-//            //            Principal principal,
-//            Authentication authentication,
-//            HttpServletRequest request) {
-//
-////        User user = userService.findByUsername(principal.getName());
-//        User user = check.getUserInfo(authentication);
-//        model.addAttribute("user", user);
-//        model.addAttribute("userPayment", user.getUserPayment());
-//        model.addAttribute("userShipping", user.getUserShipping());
-//        model.addAttribute("orderList", user.getOrderList());
-//
-//        model.addAttribute("listOfCreditCards", true);
-//        model.addAttribute("classActiveBilling", true);
-//        model.addAttribute("listOfShippingAddresses", true);
-//        return "myProfile";
-//    }
-//
-//    @RequestMapping("/listOfShippingAddresses")
-//    public String listOfShippingAddresses(
-//            Model model,
-//            Authentication authentication,
-//            //            Principal principal,
-//            HttpServletRequest request) {
-//
-////        User user = userService.findByUsername(principal.getName());
-//        User user = check.getUserInfo(authentication);
-//        model.addAttribute("user", user);
-//        model.addAttribute("userPayment", user.getUserPayment());
-//        model.addAttribute("userShipping", user.getUserShipping());
-//        model.addAttribute("orderList", user.getOrderList());
-//
-//        model.addAttribute("listOfCreditCards", true);
-//        model.addAttribute("classActiveShipping", true);
-//        model.addAttribute("listOfShippingAddresses", true);
-//
-//        return "myProfile";
-//    }
     @RequestMapping("/addNewCreditCard")
     public String addNewCreditCard(
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
 
         model.addAttribute("user", user);
 
@@ -538,11 +445,6 @@ public class HomeController {
         model.addAttribute("classActiveBilling", true);
         model.addAttribute("listOfShippingAddresses", true);
 
-//        UserBilling userBilling = new UserBilling();
-//        UserPayment userPayment = new UserPayment();
-//
-//        model.addAttribute("userBilling", userBilling);
-//        model.addAttribute("userPayment", userPayment);
         model.addAttribute("userPayment", user.getUserPayment());
         model.addAttribute("userBilling", user.getUserPayment().getUserBilling());
         model.addAttribute("userShipping", user.getUserShipping());
@@ -566,7 +468,6 @@ public class HomeController {
             model.addAttribute("CreditCardException", true);
             return "errorPageCustomer";
         }
-//        User user = userService.findByUsername(principal.getName());
 
         try {
             userService.updateUserBilling(userBilling, userPayment, user);
@@ -602,7 +503,6 @@ public class HomeController {
             model.addAttribute("shippingAddressException", true);
             return "errorPageCustomer";
         }
-//        User user = userService.findByUsername(principal.getName());
 
         try {
             userService.updateUserShipping(userShipping, user);
@@ -628,11 +528,9 @@ public class HomeController {
     public String updateCreditCard(
             @ModelAttribute("id") long creditCardId,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<UserPayment> userPaymenOpt = userPaymentService.findById(creditCardId);
         UserPayment userPayment = null;
         if (!userPaymenOpt.equals(null)) {
@@ -663,11 +561,9 @@ public class HomeController {
     public String updateUserShippingPost(
             @ModelAttribute("id") long userShippingId,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<UserShipping> userShippingOpt = userShippingService.findById(userShippingId);
         UserShipping userShipping = userShippingOpt.get();
 
@@ -690,61 +586,13 @@ public class HomeController {
         }
     }
 
-//    @PostMapping("/setDefaultPayment")
-//    public String setDefaultPaymentPost(
-//            @ModelAttribute("defaultUserPaymentId") long defaultPayment,
-//            Authentication authentication,
-//            //            Principal principal,
-//            Model model) {
-//
-//        User user = check.getUserInfo(authentication);
-////        User user = userService.findByUsername(principal.getName());
-//        userService.setUserDefaultPayment(defaultPayment, user);
-//
-//        model.addAttribute("user", user);
-//        model.addAttribute("userPayment", user.getUserPayment());
-//        model.addAttribute("userShipping", user.getUserShipping());
-//        model.addAttribute("orderList", user.getOrderList());
-//
-//        model.addAttribute("listOfCreditCards", true);
-//        model.addAttribute("classActiveBilling", true);
-//        model.addAttribute("listOfShippingAddresses", true);
-//
-//        return "myProfile";
-//    }
-
-//    @PostMapping("/setDefaultShippingAddress")
-//    public String setDefaultShippingAddressPost(
-//            @ModelAttribute("defaultShippingAddressId") long defaultShippingId,
-//            Authentication authentication,
-//            //            Principal principal,
-//            Model model) {
-//
-//        User user = check.getUserInfo(authentication);
-////        User user = userService.findByUsername(principal.getName());
-//        userService.setUserDefaultShipping(defaultShippingId, user);
-//
-//        model.addAttribute("user", user);
-//        model.addAttribute("userPayment", user.getUserPayment());
-//        model.addAttribute("userShipping", user.getUserShipping());
-//        model.addAttribute("orderList", user.getOrderList());
-//
-//        model.addAttribute("listOfCreditCards", true);
-//        model.addAttribute("classActiveShipping", true);
-//        model.addAttribute("listOfShippingAddresses", true);
-//
-//        return "myProfile";
-//    }
-
     @RequestMapping("/removeCreditCard")
     private String removeCreditCard(
             @ModelAttribute("id") long creditCardId,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<UserPayment> userPaymenOpt = userPaymentService.findById(creditCardId);
         UserPayment userPayment = null;
         if (!userPaymenOpt.equals(null)) {
@@ -773,11 +621,9 @@ public class HomeController {
     private String removeUserShipping(
             @ModelAttribute("id") long userShippingId,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<UserShipping> userShippingOpt = userShippingService.findById(userShippingId);
         UserShipping userShipping = userShippingOpt.get();
 
@@ -801,11 +647,9 @@ public class HomeController {
     public String addNewShippingAddress(
             Model model,
             Authentication authentication
-    //            Principal principal
     ) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
 
         model.addAttribute("user", user);
 
@@ -820,7 +664,6 @@ public class HomeController {
         model.addAttribute("userPayment", user.getUserPayment());
         model.addAttribute("userShipping", user.getUserShipping());
         model.addAttribute("orderList", user.getOrderList());
-//        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -868,21 +711,6 @@ public class HomeController {
         userService.createPasswordResetTokenForUser(user, token);
 
         String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-//        String url = appUrl + "/newUser?token=" + token;
-//        JavaMailSenderImpl sender = new JavaMailSenderImpl();
-//        sender.setHost("smtp.mailtrap.io");
-//        sender.setPort(2525);
-//        sender.setUsername("e6ecbc5819b818");
-//        sender.setPassword("d6f171a4ce5f3b");
-//
-//        SimpleMailMessage mailMessage = new SimpleMailMessage();
-//        mailMessage.setFrom("scolic994@gmail.com");
-//        mailMessage.setTo(userEmail);
-//        mailMessage.setSubject("Password token");
-//        mailMessage.setText("Dear User, use this password: \n" + password + "\nand copy it to apropriate field on this link:\n" + url + "\nin order to set your personal informations");
-//
-//        System.out.println(emailConfig.getHost() + " " + emailConfig.getPort() + " " + emailConfig.getPassword() + " " + emailConfig.getUsername());
-//        sender.send(mailMessage);
 
         SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 
@@ -916,7 +744,6 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         model.addAttribute("user", user);
-//        model.addAttribute("orderList", user.getOrderList());
 
         model.addAttribute("classActiveEdit", true);
         return "myProfile";
@@ -989,8 +816,6 @@ public class HomeController {
         model.addAttribute("listOfShippingAddresses", true);
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("orderList", user.getOrderList());
-//        model.addAttribute("userPayment", user.getUserPayment());
-//        model.addAttribute("userShipping", user.getUserShipping());
         UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.getUsername());
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
@@ -1007,11 +832,9 @@ public class HomeController {
     public String orderDetail(
             @RequestParam("id") long orderId,
             Authentication authentication,
-            //            Principal principal,
             Model model) {
 
         User user = check.getUserInfo(authentication);
-//        User user = userService.findByUsername(principal.getName());
         Optional<Order> orderOpt = orderService.findOne(orderId);
         Order order = orderOpt.get();
 

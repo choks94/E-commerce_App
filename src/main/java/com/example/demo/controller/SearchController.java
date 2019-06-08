@@ -46,7 +46,6 @@ public class SearchController {
             @RequestParam("category") String category,
             Model model,
             Authentication authentication,
-            //            Principal principal,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
     ) {
@@ -54,31 +53,19 @@ public class SearchController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
 
-//        if (principal != null) {
-//            String username = principal.getName();
-//            User user = userService.findByUsername(username);
-//            model.addAttribute("user", user);
-//        }
         if (authentication != null) {
             User user = check.getUserInfo(authentication);
             if (user != null) {
                 model.addAttribute("user", user);
             }
         }
-//        Page<Watch> watchPage = watchService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         Page<Watch> watchPage = watchService.findByCategory(PageRequest.of(currentPage - 1, pageSize), category);
         String classActiveCategory = "active" + category;
         classActiveCategory = classActiveCategory.replaceAll("\\s+", "");
         model.addAttribute(classActiveCategory, true);
 
-//        Page<Watch> watchList = watchService.findByCategory(PageRequest.of(currentPage - 1, pageSize), category);
-//        List<Watch> watchList = watchService.findAll();
-//        if (principal != null) {
-//            String username = principal.getName();
-//            User user = userService.findByUsername(username);
-//            model.addAttribute("user", user);
-//        }
+
         model.addAttribute("watchPage", watchPage);
 
         int totalPages = watchPage.getTotalPages();
@@ -104,7 +91,6 @@ public class SearchController {
             @ModelAttribute("keyword") String keyword,
             Model model,
             Authentication authentication,
-//            Principal principal,
             @RequestParam("page") Optional<Integer> page,
             @RequestParam("size") Optional<Integer> size
     ) {
@@ -112,12 +98,6 @@ public class SearchController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(6);
 
-//        if (principal != null) {
-//            String username = principal.getName();
-//            User user = userService.findByUsername(username);
-//            model.addAttribute("user", user);
-//        }
-//        
          if (authentication != null) {
             User user = check.getUserInfo(authentication);
             if (user != null) {

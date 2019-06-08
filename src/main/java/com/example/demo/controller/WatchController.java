@@ -96,22 +96,16 @@ public class WatchController {
                         break;
                 }
                 try {
-//                    file.transferTo(new File("src/main/resources/static/image/watch/" + watch.getId() + "_" + ch + ".png"));
-//                    fileNames.add(file.getOriginalFilename());
                     byte[] bytes = file.getBytes();
                     String name = watch.getId() + "_" + ch + ".png";
                     BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("src/main/resources/static/image/watch/" + name)));
                     stream.write(bytes);
                     br++;
-                    System.out.println("--------------------" + br);
-                    System.out.println("--------------------" + name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
-        System.out.println("Watch: " + watch);
 
         watch.setWatchComments(new HashSet<UserComment>());
 
@@ -179,12 +173,11 @@ public class WatchController {
 
         Set<UserComment> userCommentList = userCommentService.findByWatch(watch);
 
-        System.out.println("User comments: " + userCommentList);
         model.addAttribute("userCommentList", userCommentList);
 
         return "watchInfo";
     }
-    
+
     @RequestMapping("/newWatchInfo")
     public String newWatchInfo(@RequestParam("id") Long id, Model model) {
 
@@ -248,7 +241,7 @@ public class WatchController {
         System.out.println("User comments: " + userCommentList);
         model.addAttribute("userCommentList", userCommentList);
         model.addAttribute("SaveSuccess", true);
-        
+
         return "watchInfo";
     }
 
@@ -264,8 +257,6 @@ public class WatchController {
         } catch (Exception e) {
         }
 
-//        Optional<Watch> watchOpt = watchService.findOne(userComment.getWatch().getId());
-//        Watch watch = watchOpt.get();
         try {
             userCommentService.removeById(id);
         } catch (Exception e) {
@@ -275,8 +266,6 @@ public class WatchController {
 
         model.addAttribute("commentRemoveSuccess", true);
         return "forward:watchInfo?id=" + userComment.getWatch().getId();
-//        return "home";
-
     }
 
     @RequestMapping("/updateWatch")
@@ -292,26 +281,6 @@ public class WatchController {
         File f5 = new File("src/main/resources/static/image/watch/" + id + "_e.png");
 
         List<String> album = new ArrayList<>();
-//        try {
-//            if (!Files.readAllBytes(f1.toPath()).equals(null)) {
-//                album.add("/image/watch/" + id + "_a.png");
-//            }
-//            if (!Files.readAllBytes(f2.toPath()).equals(null)) {
-//                album.add("/image/watch/" + id + "_b.png");
-//            }
-//            if (!Files.readAllBytes(f3.toPath()).equals(null)) {
-//                album.add("/image/watch/" + id + "_c.png");
-//            }
-//            if (!Files.readAllBytes(f4.toPath()).equals(null)) {
-//                album.add("/image/watch/" + id + "_d.png");
-//            }
-//            if (!Files.readAllBytes(f5.toPath()).equals(null)) {
-//                album.add("/image/watch/" + id + "_e.png");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         try {
             if (Files.readAllBytes(f1.toPath()) != null) {
                 album.add("/image/watch/" + id + "_a.png");
@@ -352,7 +321,6 @@ public class WatchController {
         return "updateWatch";
     }
 
-//    @RequestMapping(value = "/updateWatch", method = RequestMethod.POST)
     @PostMapping("/updateWatch")
     public String updateWatchPost(@ModelAttribute("watch") Watch watch,
             HttpServletRequest request,
@@ -367,22 +335,15 @@ public class WatchController {
             return "errorPageAdmin";
         }
 
-        System.out.println("!!!!!!!!!!!!!!!!!!!!" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getOriginalFilename());
-
         if (watch.getAlbums().length > 0 && watch.getAlbums()[0].getSize() > 0 && !watch.getAlbums()[0].getOriginalFilename().equals("")) {
-            System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getOriginalFilename());
-
             try {
-//            byte[] bts = Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath());
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_a.png"));
                 }
             } catch (IOException ex) {
-                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
                 Logger
                         .getLogger(WatchController.class
                                 .getName()).log(Level.SEVERE, null, ex);
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
 
             try {
@@ -390,11 +351,9 @@ public class WatchController {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_b.png"));
                 }
             } catch (IOException ex) {
-                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
                 Logger
                         .getLogger(WatchController.class
                                 .getName()).log(Level.SEVERE, null, ex);
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
 
             try {
@@ -402,11 +361,9 @@ public class WatchController {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_c.png"));
                 }
             } catch (IOException ex) {
-                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
                 Logger
                         .getLogger(WatchController.class
                                 .getName()).log(Level.SEVERE, null, ex);
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
 
             try {
@@ -414,11 +371,9 @@ public class WatchController {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_d.png"));
                 }
             } catch (IOException ex) {
-                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
                 Logger
                         .getLogger(WatchController.class
                                 .getName()).log(Level.SEVERE, null, ex);
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
 
             try {
@@ -426,11 +381,9 @@ public class WatchController {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_e.png"));
                 }
             } catch (IOException ex) {
-                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
                 Logger
                         .getLogger(WatchController.class
                                 .getName()).log(Level.SEVERE, null, ex);
-                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
             ArrayList<String> fileNames = null;
             if (watch.getAlbums().length > 0) {
@@ -458,15 +411,11 @@ public class WatchController {
                             break;
                     }
                     try {
-//                    file.transferTo(new File("src/main/resources/static/image/watch/" + watch.getId() + "_" + ch + ".png"));
-//                    fileNames.add(file.getOriginalFilename());
                         byte[] bytes = file.getBytes();
                         String name = watch.getId() + "_" + ch + ".png";
                         BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File("src/main/resources/static/image/watch/" + name)));
                         stream.write(bytes);
                         br++;
-                        System.out.println("--------------------" + br);
-                        System.out.println("--------------------" + name);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -495,25 +444,22 @@ public class WatchController {
     public String removeWatch(
             @ModelAttribute("id") String id,
             Model model) {
-        System.out.println("========================" + id.substring(9));
         long watchId = Long.parseLong(id.substring(9));
         try {
-            
+
             watchService.removeOne(watchId);
         } catch (Exception e) {
             model.addAttribute("WatchDeleteException", true);
             return "errorPageAdmin";
         }
         try {
-//            byte[] bts = Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath());
-            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId +  "_a.png").toPath()).length != 0) {
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId + "_a.png").toPath()).length != 0) {
                 Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_a.png"));
             }
         } catch (IOException ex) {
             Logger
                     .getLogger(WatchController.class
                             .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("&&&&&&&&&&&&&&&&&&&");
         }
 
         try {
@@ -521,11 +467,10 @@ public class WatchController {
                 Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_b.png"));
             }
         } catch (IOException ex) {
-            
+
             Logger
                     .getLogger(WatchController.class
                             .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("&&&&&&&&&&&&&&&&&&&");
         }
 
         try {
@@ -533,11 +478,10 @@ public class WatchController {
                 Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_c.png"));
             }
         } catch (IOException ex) {
-            
+
             Logger
                     .getLogger(WatchController.class
                             .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("&&&&&&&&&&&&&&&&&&&");
         }
 
         try {
@@ -545,11 +489,10 @@ public class WatchController {
                 Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_d.png"));
             }
         } catch (IOException ex) {
-            
+
             Logger
                     .getLogger(WatchController.class
                             .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("&&&&&&&&&&&&&&&&&&&");
         }
 
         try {
@@ -557,13 +500,12 @@ public class WatchController {
                 Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_e.png"));
             }
         } catch (IOException ex) {
-            
+
             Logger
                     .getLogger(WatchController.class
                             .getName()).log(Level.SEVERE, null, ex);
-            System.out.println("&&&&&&&&&&&&&&&&&&&");
         }
-        
+
         List<Watch> watchList = watchService.findAll();
         model.addAttribute("watchList", watchList);
         model.addAttribute("DeleteSuccess", true);

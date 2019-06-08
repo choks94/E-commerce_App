@@ -131,7 +131,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserInfoTokenServices tokenServices = new UserInfoTokenServices(googleResource().getUserInfoUri(), google().getClientId());
         tokenServices.setRestTemplate(googleTemplate);
         googleFilter.setTokenServices(tokenServices);
-        System.out.println("++++++++++++++++++++++++++++++"+googleFilter);
         filters.add(googleFilter);
 
         filter.setFilters(filters);

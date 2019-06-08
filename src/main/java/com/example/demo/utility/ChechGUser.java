@@ -35,16 +35,13 @@ public class ChechGUser {
 
         if (authentication instanceof OAuth2Authentication) {
             OAuth2Authentication auth = (OAuth2Authentication) authentication;
-            System.out.println("----------------------------" + auth.getDetails());
             UsernamePasswordAuthenticationToken details = (UsernamePasswordAuthenticationToken) auth.getUserAuthentication();
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + details.getName());
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + details.getDetails());
+            
             String dets = details.getDetails().toString();
             String email = dets.split("email=")[1].split(",")[0];
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + email);
             String firstName = dets.split("given_name=")[1].split(",")[0];
             String lastName = dets.split("family_name=")[1].split(",")[0];
-            System.out.println("First: " + firstName + " Last: " + lastName);
+            
 
             User user = userService.findByEmail(email);
             if (user != null) {
@@ -55,7 +52,6 @@ public class ChechGUser {
                 user.setLastName(lastName);
                 user.setUsername(email);
                 user.setUserType("GoogleUser");
-//            user.setPassword(SecurityUtility.passwordEncoder().encode("coks"));
                 user.setEmail(email);
 
                 Set<UserRole> userRoles = new HashSet<>();
@@ -72,8 +68,6 @@ public class ChechGUser {
                 return user;
             }
         } else {
-            System.out.println("++++++++++++++++++++++++++++" + authentication);
-            System.out.println("***************************" + authentication.getName());
             User user = userService.findByUsername(authentication.getName());
             return user;
         }

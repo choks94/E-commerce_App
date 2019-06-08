@@ -24,7 +24,6 @@ public class LoginController {
 
     @RequestMapping("/user")
     public Principal user(Principal principal) {
-        System.out.println("/////////////////////////"+principal.getName());
         return principal;
     }
 }
