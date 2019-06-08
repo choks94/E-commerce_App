@@ -17,11 +17,9 @@
     </head>
 
     <body style="background-color: #606060">
-
-        <div>
+        <div style="margin-bottom: 100px;">
             <div th:replace="common/adminHeader :: navbar" />
+            <div th:replace="common/adminHeader :: body-bottom-scripts"/>
         </div>
-            
-        <div th:replace="common/adminHeader :: body-bottom-scripts"/>
     </body>
 </html>

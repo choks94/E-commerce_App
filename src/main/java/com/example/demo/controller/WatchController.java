@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -71,7 +72,7 @@ public class WatchController {
         }
         ArrayList<String> fileNames = null;
         if (watch.getAlbums().length > 0) {
-            fileNames = new ArrayList<String>();
+            fileNames = new ArrayList<>();
             int br = 0;
             for (MultipartFile file : watch.getAlbums()) {
                 char ch = 'a';
@@ -115,7 +116,7 @@ public class WatchController {
         watch.setWatchComments(new HashSet<UserComment>());
 
         model.addAttribute("SaveSuccess", true);
-        return "forward:watchInfo?id=" + savedWatch.getId();
+        return "redirect:newWatchInfo?id=" + savedWatch.getId();
     }
 
     @RequestMapping("/watchInfo")
@@ -140,26 +141,40 @@ public class WatchController {
 
         List<String> album = new ArrayList<>();
         try {
-            if (!Files.readAllBytes(f1.toPath()).equals(null)) {
+            if (Files.readAllBytes(f1.toPath()) != null) {
                 album.add("/image/watch/" + id + "_a.png");
             }
-            if (!Files.readAllBytes(f2.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f2.toPath()) != null) {
                 album.add("/image/watch/" + id + "_b.png");
             }
-            if (!Files.readAllBytes(f3.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f3.toPath()) != null) {
                 album.add("/image/watch/" + id + "_c.png");
             }
-            if (!Files.readAllBytes(f4.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f4.toPath()) != null) {
                 album.add("/image/watch/" + id + "_d.png");
             }
-            if (!Files.readAllBytes(f5.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f5.toPath()) != null) {
                 album.add("/image/watch/" + id + "_e.png");
             }
         } catch (Exception e) {
-//            e.printStackTrace();
             System.out.println("No such file exception");
         }
-
         model.addAttribute("album", album);
 
         Set<UserComment> userCommentList = userCommentService.findByWatch(watch);
@@ -169,6 +184,73 @@ public class WatchController {
 
         return "watchInfo";
     }
+    
+    @RequestMapping("/newWatchInfo")
+    public String newWatchInfo(@RequestParam("id") Long id, Model model) {
+
+        Watch watch = new Watch();
+        try {
+            Optional<Watch> w = watchService.findOne(id);
+            watch = w.get();
+        } catch (Exception e) {
+            model.addAttribute("WatchDetailsException", true);
+            return "errorPageAdmin";
+        }
+
+        model.addAttribute("watch", watch);
+
+        File f1 = new File("src/main/resources/static/image/watch/" + id + "_a.png");
+        File f2 = new File("src/main/resources/static/image/watch/" + id + "_b.png");
+        File f3 = new File("src/main/resources/static/image/watch/" + id + "_c.png");
+        File f4 = new File("src/main/resources/static/image/watch/" + id + "_d.png");
+        File f5 = new File("src/main/resources/static/image/watch/" + id + "_e.png");
+
+        List<String> album = new ArrayList<>();
+        try {
+            if (Files.readAllBytes(f1.toPath()) != null) {
+                album.add("/image/watch/" + id + "_a.png");
+            }
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f2.toPath()) != null) {
+                album.add("/image/watch/" + id + "_b.png");
+            }
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f3.toPath()) != null) {
+                album.add("/image/watch/" + id + "_c.png");
+            }
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f4.toPath()) != null) {
+                album.add("/image/watch/" + id + "_d.png");
+            }
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f5.toPath()) != null) {
+                album.add("/image/watch/" + id + "_e.png");
+            }
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        model.addAttribute("album", album);
+
+        Set<UserComment> userCommentList = userCommentService.findByWatch(watch);
+
+        System.out.println("User comments: " + userCommentList);
+        model.addAttribute("userCommentList", userCommentList);
+        model.addAttribute("SaveSuccess", true);
+        
+        return "watchInfo";
+    }
 
     @RequestMapping("/removeComment")
     public String removeComment(
@@ -176,7 +258,7 @@ public class WatchController {
             Model model) {
 
         UserComment userComment = null;
-        try { 
+        try {
             Optional<UserComment> userCommentOpt = userCommentService.findOne(id);
             userComment = userCommentOpt.get();
         } catch (Exception e) {
@@ -210,26 +292,61 @@ public class WatchController {
         File f5 = new File("src/main/resources/static/image/watch/" + id + "_e.png");
 
         List<String> album = new ArrayList<>();
+//        try {
+//            if (!Files.readAllBytes(f1.toPath()).equals(null)) {
+//                album.add("/image/watch/" + id + "_a.png");
+//            }
+//            if (!Files.readAllBytes(f2.toPath()).equals(null)) {
+//                album.add("/image/watch/" + id + "_b.png");
+//            }
+//            if (!Files.readAllBytes(f3.toPath()).equals(null)) {
+//                album.add("/image/watch/" + id + "_c.png");
+//            }
+//            if (!Files.readAllBytes(f4.toPath()).equals(null)) {
+//                album.add("/image/watch/" + id + "_d.png");
+//            }
+//            if (!Files.readAllBytes(f5.toPath()).equals(null)) {
+//                album.add("/image/watch/" + id + "_e.png");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         try {
-            if (!Files.readAllBytes(f1.toPath()).equals(null)) {
+            if (Files.readAllBytes(f1.toPath()) != null) {
                 album.add("/image/watch/" + id + "_a.png");
             }
-            if (!Files.readAllBytes(f2.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f2.toPath()) != null) {
                 album.add("/image/watch/" + id + "_b.png");
             }
-            if (!Files.readAllBytes(f3.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f3.toPath()) != null) {
                 album.add("/image/watch/" + id + "_c.png");
             }
-            if (!Files.readAllBytes(f4.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f4.toPath()) != null) {
                 album.add("/image/watch/" + id + "_d.png");
             }
-            if (!Files.readAllBytes(f5.toPath()).equals(null)) {
+        } catch (Exception e) {
+            System.out.println("No such file exception");
+        }
+        try {
+            if (Files.readAllBytes(f5.toPath()) != null) {
                 album.add("/image/watch/" + id + "_e.png");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("No such file exception");
         }
-
         model.addAttribute("album", album);
 
         return "updateWatch";
@@ -254,29 +371,66 @@ public class WatchController {
 
         if (watch.getAlbums().length > 0 && watch.getAlbums()[0].getSize() > 0 && !watch.getAlbums()[0].getOriginalFilename().equals("")) {
             System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getOriginalFilename());
+
             try {
 //            byte[] bts = Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath());
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_a.png"));
                 }
+            } catch (IOException ex) {
+                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
+                Logger
+                        .getLogger(WatchController.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
+            }
+
+            try {
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_b.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_b.png"));
                 }
+            } catch (IOException ex) {
+                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
+                Logger
+                        .getLogger(WatchController.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
+            }
 
+            try {
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_c.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_c.png"));
                 }
+            } catch (IOException ex) {
+                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
+                Logger
+                        .getLogger(WatchController.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
+            }
 
+            try {
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_d.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_d.png"));
                 }
+            } catch (IOException ex) {
+                System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
+                Logger
+                        .getLogger(WatchController.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
+            }
 
+            try {
                 if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_e.png").toPath()).length != 0) {
                     Files.delete(Paths.get("src/main/resources/static/image/watch/" + watch.getId() + "_e.png"));
                 }
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 System.out.println("###############" + watch.getAlbums()[0].getSize() + "@@@@@@@@@@@@@ " + watch.getAlbums()[0].getName());
-                Logger.getLogger(WatchController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger
+                        .getLogger(WatchController.class
+                                .getName()).log(Level.SEVERE, null, ex);
+                System.out.println("&&&&&&&&&&&&&&&&&&&");
             }
             ArrayList<String> fileNames = null;
             if (watch.getAlbums().length > 0) {
@@ -342,12 +496,74 @@ public class WatchController {
             @ModelAttribute("id") String id,
             Model model) {
         System.out.println("========================" + id.substring(9));
+        long watchId = Long.parseLong(id.substring(9));
         try {
-            watchService.removeOne(Long.parseLong(id.substring(9)));
+            
+            watchService.removeOne(watchId);
         } catch (Exception e) {
             model.addAttribute("WatchDeleteException", true);
             return "errorPageAdmin";
         }
+        try {
+//            byte[] bts = Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watch.getId() + "_a.png").toPath());
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId +  "_a.png").toPath()).length != 0) {
+                Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_a.png"));
+            }
+        } catch (IOException ex) {
+            Logger
+                    .getLogger(WatchController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("&&&&&&&&&&&&&&&&&&&");
+        }
+
+        try {
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId + "_b.png").toPath()).length != 0) {
+                Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_b.png"));
+            }
+        } catch (IOException ex) {
+            
+            Logger
+                    .getLogger(WatchController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("&&&&&&&&&&&&&&&&&&&");
+        }
+
+        try {
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId + "_c.png").toPath()).length != 0) {
+                Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_c.png"));
+            }
+        } catch (IOException ex) {
+            
+            Logger
+                    .getLogger(WatchController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("&&&&&&&&&&&&&&&&&&&");
+        }
+
+        try {
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId + "_d.png").toPath()).length != 0) {
+                Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_d.png"));
+            }
+        } catch (IOException ex) {
+            
+            Logger
+                    .getLogger(WatchController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("&&&&&&&&&&&&&&&&&&&");
+        }
+
+        try {
+            if (Files.readAllBytes(new File("src/main/resources/static/image/watch/" + watchId + "_e.png").toPath()).length != 0) {
+                Files.delete(Paths.get("src/main/resources/static/image/watch/" + watchId + "_e.png"));
+            }
+        } catch (IOException ex) {
+            
+            Logger
+                    .getLogger(WatchController.class
+                            .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("&&&&&&&&&&&&&&&&&&&");
+        }
+        
         List<Watch> watchList = watchService.findAll();
         model.addAttribute("watchList", watchList);
         model.addAttribute("DeleteSuccess", true);
