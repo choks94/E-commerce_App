@@ -25,13 +25,9 @@
 
                 <!--Left panel-->
                 <div class="col-xs-4">
-                    <!--<form th:action="@{/checkOut}" method="post">-->
+
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <!--                            <div th:if="${shippingServiceAvailable}">
-                                                            <button type="submit" class="btn btn-warning btn-block">Place your order</button>
-                                                            <p style="font-size: smaller;">By placing your order, you agree to ours store<a href="">privacy</a> notice and<a href="#"> conditions</a> of use.</p>
-                                                        </div>-->
                             <hr />
                             <h3>Order Summary</h3>
                             <div class="row">
@@ -55,7 +51,7 @@
                                     Estimated shipping cost:
                                 </div>
                                 <div class="col-xs-5 text-right">
-                                    <!--                                        $<span th:text="${shippingCost}"></span>-->
+
                                     $<span id="shippingCost" name ="shippingCost" th:text="${shippingStandardCost}"></span>
                                 </div>
                             </div>
@@ -105,21 +101,6 @@
                             <div id="shippingInfo" class="panel-collapse collapse" th:classappend="${classActiveShipping}? 'in'">
 
                                 <div class="panel-body">
-                                    <!--                                        <table class="table" th:if="${not emptyShippingList}">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Available Shipping Address</th>
-                                                                                        <th>Operations</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr th:each="userShipping : ${userShippingList}">
-                                                                                        <td th:text="${userShipping.userShippingStreet}+' '+${userShipping.userShippingCity}+' '+${userShipping.userShippingZipcode}"></td>
-                                                                                        <td><a th:href="@{/setShippingAddress(userShippingId=${userShipping.id})}">use this address</a></td>
-                                    
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>-->
 
                                     <div class="form-group">
                                         <label for="shippingName"> *Name</label>
@@ -165,20 +146,6 @@
                             </div>
                             <div id="paymentInfo" class="panel-collapse collapse" th:classappend="${classActivePayment}? 'in'">
                                 <div class="panel-body">
-                                    <!--                                        <table class="table" th:if="${not emptyPaymentList}">
-                                                                                <thead>
-                                                                                    <tr>
-                                                                                        <th>Available Credit Card</th>
-                                                                                        <th>Operations</th>
-                                                                                    </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                    <tr th:each="userPayment : ${userPaymentList}">
-                                                                                        <td th:text="${userPayment.cardName}"></td>
-                                                                                        <td><a th:href="@{/setPaymentMethod(userPaymentId=${userPayment.id})}">use this payment</a></td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>-->
 
                                     <!--Credit Card Information-->
                                     <div class="row">
